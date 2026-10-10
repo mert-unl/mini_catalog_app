@@ -15,7 +15,7 @@ class ProductService {
       final response = await request.close();
 
       if (response.statusCode != 200) {
-        throw Exception('Ürünler yüklenemedi.');
+        throw Exception('Products did not load.');
       }
 
       final responseBody = await response.transform(utf8.decoder).join();

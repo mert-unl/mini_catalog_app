@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'product.dart';
 import 'products_service.dart';
+import 'product_card.dart';
 
 void main() {
   runApp(const MyApp());
@@ -122,51 +123,64 @@ class _HomePageState extends State<HomePage> {
 
                       return Card(
                         clipBehavior: Clip.antiAlias,
-                        child: Padding(
-                          padding: const EdgeInsets.all(6),
+                        
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    ProductDetailPage(product: product),
+                              ),
+                            );
+                          },
+                          
+                          child: Padding(
+                            padding: const EdgeInsets.all(6),
 
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(6),
-                                  child: Image.network(
-                                    product.imageUrl,
-                                    width: double.infinity,
-                                    fit: BoxFit.contain,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(6),
+                                    child: Image.network(
+                                      product.imageUrl,
+                                      width: double.infinity,
+                                      fit: BoxFit.contain,
+                                    ),
                                   ),
                                 ),
-                              ),
 
-                              Text(
-                                product.name,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
+                                Text(
+                                  product.name,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                  ),
                                 ),
-                              ),
 
-                              Text(
-                                product.tagline,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-
-                              Text(
-                                product.price,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-
-                                style: const TextStyle(
-                                  color: Color.fromARGB(255, 223, 153, 2),
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
+                                Text(
+                                  product.tagline,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                              ),
-                            ],
+
+                                Text(
+                                  product.price,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+
+                                  style: const TextStyle(
+                                    color: Color.fromARGB(255, 223, 153, 2),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       );
