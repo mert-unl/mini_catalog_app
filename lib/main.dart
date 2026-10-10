@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'product.dart';
 import 'products_service.dart';
 import 'product_card.dart';
+import 'cart.dart';
+import 'cart_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,20 +15,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cart = Cart();
+
     return MaterialApp(
       title: 'Mini Katalog',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color.fromARGB(255, 223, 183, 6),
+        ),
         useMaterial3: true,
       ),
-      home: const HomePage(),
+      home: HomePage(cart: cart),
     );
   }
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final Cart cart;
+  const HomePage({super.key, required this.cart});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -46,7 +53,26 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Mini Katalog'), centerTitle: true),
+      appBar: AppBar(
+        title: const Text(
+          'MertShop',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CartPage(cart: widget.cart),
+                ),
+              );
+            },
+
+            icon: const Icon(Icons.shopping_cart_outlined),
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -71,11 +97,13 @@ class _HomePageState extends State<HomePage> {
                   },
                 ),
               ),
+
               const SizedBox(height: 24),
               const Text(
                 'Discover Products',
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
+
               const SizedBox(height: 8),
               const Text(
                 'Browse our catalog to explore new products.',
@@ -123,18 +151,20 @@ class _HomePageState extends State<HomePage> {
 
                       return Card(
                         clipBehavior: Clip.antiAlias,
-                        
+
                         child: InkWell(
                           onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    ProductDetailPage(product: product),
+                                builder: (context) => ProductDetailPage(
+                                  product: product,
+                                  cart: widget.cart,
+                                ),
                               ),
                             );
                           },
-                          
+
                           child: Padding(
                             padding: const EdgeInsets.all(6),
 
