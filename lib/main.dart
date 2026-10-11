@@ -33,11 +33,14 @@ class MyApp extends StatelessWidget {
 
 class HomePage extends StatefulWidget {
   final Cart cart;
+
   const HomePage({super.key, required this.cart});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
+
+String searchQuery = '';
 
 class _HomePageState extends State<HomePage> {
   final ProductService productService = ProductService();
@@ -53,9 +56,11 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 248, 247, 243),
+
       appBar: AppBar(
         title: const Text(
-          'MertShop',
+          'Mert Store',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: [
@@ -75,41 +80,46 @@ class _HomePageState extends State<HomePage> {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              TextField(
+                onChanged: (value) {
+                  setState(() {
+                    searchQuery = value;
+                  });
+                },
+                decoration: InputDecoration(
+                  hintText: 'Search products',
+                  prefixIcon: const Icon(Icons.search),
+                  filled: true,
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
               ClipRRect(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(10),
                 child: Image.network(
                   'https://wantapi.com/assets/banner.png',
                   width: double.infinity,
                   height: 80,
                   fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      height: 80,
-                      width: double.infinity,
-                      color: Colors.teal.shade100,
-                      alignment: Alignment.center,
-                      child: const Text('Mini Katalog'),
-                    );
-                  },
                 ),
               ),
-
               const SizedBox(height: 24),
+
               const Text(
                 'Discover Products',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-
-              const SizedBox(height: 8),
-              const Text(
-                'Browse our catalog to explore new products.',
-                style: TextStyle(fontSize: 16),
-              ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 12),
 
               FutureBuilder<List<Product>>(
                 future: productsFuture,
@@ -118,16 +128,12 @@ class _HomePageState extends State<HomePage> {
                     return const Center(child: CircularProgressIndicator());
                   }
 
-                  if (snapshot.hasError) {
-                    return const Center(
-                      child: Text(
-                        'Products could not be loaded. '
-                        'Please check your internet connection.',
-                      ),
+                  final allProducts = snapshot.data ?? [];
+                  final products = allProducts.where((product) {
+                    return product.name.toLowerCase().contains(
+                      searchQuery.toLowerCase(),
                     );
-                  }
-
-                  final products = snapshot.data ?? [];
+                  }).toList();
 
                   if (products.isEmpty) {
                     return const Center(child: Text('No products found yet.'));
@@ -142,8 +148,8 @@ class _HomePageState extends State<HomePage> {
                         const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                           childAspectRatio: 0.60,
-                          crossAxisSpacing: 6,
-                          mainAxisSpacing: 6,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 12,
                         ),
 
                     itemBuilder: (context, index) {
@@ -151,7 +157,8 @@ class _HomePageState extends State<HomePage> {
 
                       return Card(
                         clipBehavior: Clip.antiAlias,
-
+                        margin: const EdgeInsets.all(1),
+                        color: Color.fromARGB(225, 250, 247, 247),
                         child: InkWell(
                           onTap: () {
                             Navigator.push(
@@ -165,52 +172,77 @@ class _HomePageState extends State<HomePage> {
                             );
                           },
 
-                          child: Padding(
-                            padding: const EdgeInsets.all(6),
-
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(6),
-                                    child: Image.network(
-                                      product.imageUrl,
-                                      width: double.infinity,
-                                      fit: BoxFit.contain,
-                                    ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                flex: 4,
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  child: Image.network(
+                                    product.imageUrl,
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
+                              ),
 
-                                Text(
-                                  product.name,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
+                              Expanded(
+                                flex: 2,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        product.name,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+
+                                      Text(
+                                        product.tagline,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          color: Color.fromARGB(
+                                            255,
+                                            121,
+                                            120,
+                                            120,
+                                          ),
+                                          fontSize: 12,
+                                        ),
+                                      ),
+
+                                      Text(
+                                        product.price,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+
+                                        style: const TextStyle(
+                                          color: Color.fromARGB(
+                                            255,
+                                            240,
+                                            145,
+                                            2,
+                                          ),
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-
-                                Text(
-                                  product.tagline,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-
-                                Text(
-                                  product.price,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-
-                                  style: const TextStyle(
-                                    color: Color.fromARGB(255, 223, 153, 2),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       );
