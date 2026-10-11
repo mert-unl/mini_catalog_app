@@ -34,7 +34,7 @@ class ProductDetailPage extends StatelessWidget {
             ),
 
             Padding(
-              padding: const EdgeInsets.all(18),
+              padding: const EdgeInsets.all(12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 spacing: 10,
@@ -43,7 +43,7 @@ class ProductDetailPage extends StatelessWidget {
                   Text(
                     product.name,
                     style: const TextStyle(
-                      fontSize: 26,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -53,9 +53,9 @@ class ProductDetailPage extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 14,
                       fontStyle: FontStyle.italic,
+                      color: Color.fromARGB(255, 238, 138, 7),
                     ),
                   ),
-                  SizedBox(height: 2),
                   const Text(
                     'Description',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -64,20 +64,57 @@ class ProductDetailPage extends StatelessWidget {
                     product.description,
                     style: const TextStyle(fontSize: 14),
                   ),
+
+                  const Text(
+                    'Specifications',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+
+                  Wrap(
+                    spacing: 10,
+                    runSpacing: 10,
+                    children: product.specs.entries.map((spec) {
+                      return Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: const Color.fromARGB(255, 83, 83, 83),
+                          ),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              spec.key.toUpperCase(),
+                              style: const TextStyle(
+                                color: Color.fromARGB(255, 212, 128, 1),
+                                fontSize: 12,
+                              ),
+                            ),
+                            Flexible(
+                              child: Text(
+                                spec.value.toString(),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  ),
+
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(
-                        product.price,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Color.fromARGB(255, 223, 153, 2),
-                        ),
-                      ),
-
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 8),
 
                       ElevatedButton.icon(
                         onPressed: () {
@@ -90,16 +127,17 @@ class ProductDetailPage extends StatelessWidget {
                           );
                         },
                         icon: const Icon(Icons.shopping_cart_outlined),
-                        label: const Text(
-                          'Add to My Cart',
-                          style: TextStyle(fontSize: 18),
+
+                        label: Text(
+                          ' ${product.price}   |   Add to My Cart',
+                          style: TextStyle(fontSize: 16),
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color.fromARGB(255, 5, 5, 5),
                           foregroundColor: const Color.fromARGB(
                             255,
                             255,
-                            196,
+                            188,
                             4,
                           ),
                           padding: const EdgeInsets.symmetric(vertical: 16),

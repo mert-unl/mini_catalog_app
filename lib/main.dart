@@ -147,7 +147,7 @@ class _HomePageState extends State<HomePage> {
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
-                          childAspectRatio: 0.60,
+                          childAspectRatio: 0.65,
                           crossAxisSpacing: 10,
                           mainAxisSpacing: 12,
                         ),
@@ -158,7 +158,7 @@ class _HomePageState extends State<HomePage> {
                       return Card(
                         clipBehavior: Clip.antiAlias,
                         margin: const EdgeInsets.all(1),
-                        color: Color.fromARGB(224, 248, 246, 246),
+                        color: Color.fromARGB(223, 252, 252, 252),
                         child: InkWell(
                           onTap: () {
                             Navigator.push(
@@ -176,7 +176,7 @@ class _HomePageState extends State<HomePage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Expanded(
-                                flex: 4,
+                                flex: 3,
                                 child: SizedBox(
                                   width: double.infinity,
                                   child: Image.network(
@@ -189,7 +189,7 @@ class _HomePageState extends State<HomePage> {
                               Expanded(
                                 flex: 2,
                                 child: Padding(
-                                  padding: const EdgeInsets.all(8),
+                                  padding: const EdgeInsets.all(10),
                                   child: Column(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,
@@ -203,7 +203,7 @@ class _HomePageState extends State<HomePage> {
                                         overflow: TextOverflow.ellipsis,
                                         style: const TextStyle(
                                           fontWeight: FontWeight.bold,
-                                          fontSize: 15,
+                                          fontSize: 16,
                                         ),
                                       ),
 

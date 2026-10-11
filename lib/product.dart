@@ -5,7 +5,7 @@ class Product {
   final String description;
   final String price;
   final String imageUrl;
-  final Map<String, String> specs;
+  final Map<String, dynamic> specs;
 
   const Product({
     required this.id,
@@ -18,6 +18,8 @@ class Product {
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
+    final rawSpecs = json['specs'];
+
     return Product(
       id: json['id'] as int,
       name: json['name'] as String,
@@ -25,7 +27,7 @@ class Product {
       description: json['description'] as String,
       price: json['price'] as String,
       imageUrl: json['image'] as String,
-      specs: Map<String, String>.from(json['specs'] as Map),
+      specs: rawSpecs is Map ? Map<String, dynamic>.from(rawSpecs) : {},
     );
   }
 }
