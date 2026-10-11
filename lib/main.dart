@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 248, 247, 243),
+      backgroundColor: const Color.fromARGB(255, 255, 255, 255),
 
       appBar: AppBar(
         title: const Text(
@@ -94,7 +94,7 @@ class _HomePageState extends State<HomePage> {
                   hintText: 'Search products',
                   prefixIcon: const Icon(Icons.search),
                   filled: true,
-                  fillColor: Colors.white,
+                  fillColor: const Color.fromARGB(255, 243, 243, 243),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide.none,
@@ -158,7 +158,7 @@ class _HomePageState extends State<HomePage> {
                       return Card(
                         clipBehavior: Clip.antiAlias,
                         margin: const EdgeInsets.all(1),
-                        color: Color.fromARGB(225, 250, 247, 247),
+                        color: Color.fromARGB(224, 248, 246, 246),
                         child: InkWell(
                           onTap: () {
                             Navigator.push(
