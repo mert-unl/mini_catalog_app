@@ -158,7 +158,7 @@ class _HomePageState extends State<HomePage> {
                       return Card(
                         clipBehavior: Clip.antiAlias,
                         margin: const EdgeInsets.all(1),
-                        color: Color.fromARGB(223, 252, 252, 252),
+                        color: Color.fromARGB(242, 255, 255, 255),
                         child: InkWell(
                           onTap: () {
                             Navigator.push(

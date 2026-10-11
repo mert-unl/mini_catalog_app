@@ -34,10 +34,10 @@ class ProductDetailPage extends StatelessWidget {
             ),
 
             Padding(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 10,
+                spacing: 14,
 
                 children: [
                   Text(

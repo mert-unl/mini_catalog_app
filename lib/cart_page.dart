@@ -2,24 +2,35 @@ import 'package:flutter/material.dart';
 
 import 'cart.dart';
 
-class CartPage extends StatelessWidget {
+class CartPage extends StatefulWidget {
   final Cart cart;
 
   const CartPage({super.key, required this.cart});
 
   @override
+  State<CartPage> createState() => _CartPageState();
+}
+
+class _CartPageState extends State<CartPage> {
+  @override
   Widget build(BuildContext context) {
+    final cart = widget.cart;
+
     final totalPrice = cart.items.fold<double>(0, (total, product) {
       final price =
-          double.tryParse(product.price.replaceAll('\$', '').trim()) ?? 0;
+          double.tryParse(
+            product.price.replaceAll('\$', '').replaceAll(',', '').trim(),
+          ) ??
+          0;
+
       return total + price;
     });
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(title: const Text('My Cart')),
       body: Column(
         children: [
-          // Product list
           Expanded(
             child: cart.items.isEmpty
                 ? Center(
@@ -29,59 +40,125 @@ class CartPage extends StatelessWidget {
                         Icon(
                           Icons.shopping_cart_outlined,
                           size: 120,
-                          color: Colors.grey,
+                          color: const Color.fromARGB(255, 194, 191, 191),
                         ),
 
+                        SizedBox(height: 16),
                         const Text(
-                          'Your cart is empty.',
-                          style: TextStyle(fontSize: 20, color: Colors.grey),
+                          'Your cart is empty. Start shopping now!',
+                          style: TextStyle(fontSize: 16, color: Colors.grey),
                         ),
                       ],
                     ),
                   )
-                : ListView.builder(
-                    itemCount: cart.items.length,
-                    itemBuilder: (context, index) {
-                      final product = cart.items[index];
+                : Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 4,
+                    ),
+                    child: ListView.builder(
+                      itemCount: cart.items.length,
+                      itemBuilder: (context, index) {
+                        final product = cart.items[index];
 
-                      return Card(
-                        color: const Color.fromARGB(255, 253, 242, 221),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6),
-                          side: const BorderSide(
-                            color: Color.fromARGB(255, 255, 156, 8),
-                          ),
-                        ),
-                        child: ListTile(
-                          leading: Image.network(
-                            product.imageUrl,
-                            width: 100,
-                            height: 120,
-                            fit: BoxFit.cover,
-                          ),
-                          title: Text(product.name),
-
-                          subtitle: Text(product.price),
-                          trailing: IconButton(
-                            icon: const Icon(
-                              Icons.delete_outline,
-                              color: Colors.red,
+                        return Card(
+                          color: Colors.white,
+                          elevation: 0,
+                          margin: const EdgeInsets.symmetric(vertical: 5),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: BorderSide(
+                              color: const Color.fromARGB(255, 163, 162, 162),
+                              width: 0.5,
                             ),
-                            onPressed: () {
-                              cart.items.removeAt(index);
-                            },
                           ),
-                        ),
-                      );
-                    },
+                          clipBehavior: Clip.antiAlias,
+                          child: SizedBox(
+                            height: 90,
+                            child: Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    bottomLeft: Radius.circular(10),
+                                  ),
+                                  child: Image.network(
+                                    product.imageUrl,
+                                    width: 90,
+                                    height: 90,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+
+                                const SizedBox(width: 12),
+
+                                Expanded(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    spacing: 4,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        product.name,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        product.tagline,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.grey,
+                                          fontStyle: FontStyle.italic,
+                                        ),
+                                      ),
+                                      Text(
+                                        product.price,
+                                        style: const TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                          color: Color.fromARGB(
+                                            255,
+                                            224,
+                                            154,
+                                            3,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                IconButton(
+                                  icon: const Icon(
+                                    Icons.delete_outline,
+                                    color: Color.fromARGB(255, 194, 2, 2),
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      cart.items.removeAt(index);
+                                    });
+                                  },
+                                ),
+                                const SizedBox(width: 4),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   ),
           ),
 
-          // Fixed bottom section
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(20),
-            color: const Color.fromARGB(255, 255, 213, 134),
+            color: const Color.fromARGB(255, 0, 0, 0),
             child: SafeArea(
               top: false,
               child: Column(
@@ -93,8 +170,9 @@ class CartPage extends StatelessWidget {
                       const Text(
                         'Total Price',
                         style: TextStyle(
-                          fontSize: 24,
+                          fontSize: 22,
                           fontWeight: FontWeight.bold,
+                          color: Colors.white,
                         ),
                       ),
                       Text(
@@ -102,6 +180,7 @@ class CartPage extends StatelessWidget {
                         style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 250, 189, 22),
                         ),
                       ),
                     ],
@@ -116,13 +195,25 @@ class CartPage extends StatelessWidget {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text(
-                                    'Purchase feature is not implemented yet.',
+                                    'Successfully purchased all items in your cart!',
                                   ),
                                 ),
                               );
                             },
                       icon: const Icon(Icons.shopping_bag_outlined),
                       label: const Text('Purchase'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(
+                          255,
+                          255,
+                          255,
+                          255,
+                        ),
+                        textStyle: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                 ],
