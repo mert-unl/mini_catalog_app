@@ -30,4 +30,16 @@ class Product {
       specs: rawSpecs is Map ? Map<String, dynamic>.from(rawSpecs) : {},
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'tagline': tagline,
+      'description': description,
+      'price': price,
+      'image': imageUrl,
+      'specs': specs,
+    };
+  }
 }

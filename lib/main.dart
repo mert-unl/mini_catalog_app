@@ -6,24 +6,26 @@ import 'product_card.dart';
 import 'cart.dart';
 import 'cart_page.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final cart = Cart();
+  await cart.load();
+
+  runApp(MyApp(cart: cart));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final Cart cart;
+  const MyApp({super.key, required this.cart});
 
   @override
   Widget build(BuildContext context) {
-    final cart = Cart();
-
     return MaterialApp(
       title: 'Mini Katalog',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 223, 183, 6),
-        ),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.orange),
         useMaterial3: true,
       ),
       home: HomePage(cart: cart),
@@ -158,7 +160,7 @@ class _HomePageState extends State<HomePage> {
                       return Card(
                         clipBehavior: Clip.antiAlias,
                         margin: const EdgeInsets.all(1),
-                        color: Color.fromARGB(242, 255, 255, 255),
+                        color: Color.fromARGB(228, 255, 255, 255),
                         child: InkWell(
                           onTap: () {
                             Navigator.push(
